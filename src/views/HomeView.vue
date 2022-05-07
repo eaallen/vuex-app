@@ -2,10 +2,18 @@
   <div class="home">
     <img alt="Vue logo" src="../assets/logo.png" />
   </div>
-  <div class="counter" :style="{ color: $store.state.colorCode }">
-    <div class="count">{{ $store.state.count }}</div>
-    <div class="sqr">
-      {{ $store.state.count }} <sup>2</sup> = {{ $store.getters.squared }}
+  <div class="counter">
+    <div class="counter-view">
+      <div
+        v-if="!$store.state.loading"
+        :style="{ color: $store.state.colorCode }"
+      >
+        <div class="count">{{ $store.state.count }}</div>
+        <div class="sqr">
+          {{ $store.state.count }} <sup>2</sup> = {{ $store.getters.squared }}
+        </div>
+      </div>
+      <bar-loader v-else></bar-loader>
     </div>
     <div class="actions">
       <button @click="$store.dispatch('less')">-</button>
@@ -22,7 +30,9 @@
 
 export default {
   name: "HomeView",
-  components: {},
+  components: {
+    barLoader: require('../components/BarLoader.vue').default
+  },
   computed: {
     colorCode: {
       get() {
@@ -51,5 +61,9 @@ button {
 }
 .count {
   font-size: 6rem;
+}
+.counter-view{
+  height: 10rem;
+  padding: 1rem;
 }
 </style>
