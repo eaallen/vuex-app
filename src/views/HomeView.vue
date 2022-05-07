@@ -2,11 +2,17 @@
   <div class="home">
     <img alt="Vue logo" src="../assets/logo.png" />
   </div>
-  <div class="counter">
-    <div class="count">{{ count }}</div>
+  <div class="counter" :style="{ color: $store.state.colorCode }">
+    <div class="count">{{ $store.state.count }}</div>
+    <div class="sqr">
+      {{ $store.state.count }} <sup>2</sup> = {{ $store.getters.squared }}
+    </div>
     <div class="actions">
-      <button @click="count--">-</button>
-      <button @click="count++">+</button>
+      <button @click="$store.dispatch('less')">-</button>
+      <button @click="$store.dispatch('plus')">+</button>
+    </div>
+    <div>
+      <input type="text" placeholder="color code" v-model="colorCode" />
     </div>
   </div>
 </template>
@@ -17,6 +23,16 @@
 export default {
   name: "HomeView",
   components: {},
+  computed: {
+    colorCode: {
+      get() {
+        return this.$store.state.colorCode;
+      },
+      set(val) {
+        this.$store.commit("setColor", val);
+      },
+    },
+  },
   data() {
     return {
       count: 0,
